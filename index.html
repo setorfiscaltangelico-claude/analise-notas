@@ -518,28 +518,29 @@ function parseSEFAZ(text, filename){
     if(!byChave.has(chave)){
       byChave.set(chave,{
         chave,
-        num:   (p[1]||'').trim(),
-        serie: (p[2]||'').trim(),
-        data:  toISO(p[3]||''),
-        situacao: (p[5]||'').trim(),   /* A=Autorizada C=Cancelada */
-        tipoOp:  (p[6]||'').trim(),    /* 0=entrada 1=saída */
-        valor: parseBRL(p[7]),
-        /* Mapeamento correto confirmado do arquivo real:
-           [8]=Nome_emit  [9]=CNPJ_emit  [10]=IE_emit  [11]=UF_emit
-           [12]=Nome_dest [13]=CNPJ_dest [14]=IE_dest  [15]=UF_dest
-           [22]=BC_ICMS   [23]=VL_ICMS   [25]=VL_ICMS_ST
-           [31]=VL_IPI                                              */
-        nomeEmit:  (p[8]||'').trim(),
-        cnpjEmit:  (p[9]||'').replace(/[^\d]/g,'').trim(),
-        ieEmit:    (p[10]||'').trim(),
-        ufEmit:    (p[11]||'').trim(),
-        nomeDest:  (p[12]||'').trim(),
-        cnpjDest:  (p[13]||'').replace(/[^\d]/g,'').trim(),
-        icms:   parseBRL(p[23]),
-        icmsSt: parseBRL(p[25]),
-        ipi:    parseBRL(p[31]),
-        pis:    0,
-        cofins: 0,
+        num:    (p[1]||'').trim(),
+        serie:  (p[2]||'').trim(),
+        data:   toISO(p[3]||''),
+        situacao:(p[5]||'').trim(),    /* A=Autorizada C=Cancelada */
+        tipoOp: (p[6]||'').trim(),     /* 0=entrada 1=saída */
+        valor:  parseBRL(p[7]),
+        /* ── Mapeamento definitivo (142 colunas, confirmado do arquivo real) ──
+           [09]=Nome_emit   [10]=CNPJ_emit   [11]=IE_emit   [18]=UF_emit
+           [20]=Nome_dest   [21]=CNPJ_dest   [22]=IE_dest   [29]=UF_dest
+           [41]=BC_ICMS     [42]=VL_ICMS
+           [43]=BC_ICMS_ST  [44]=VL_ICMS_ST
+           [50]=VL_IPI      [51]=PIS_Total   [52]=COFINS_Total              */
+        nomeEmit:  (p[9]||'').trim(),
+        cnpjEmit:  (p[10]||'').replace(/[^\d]/g,'').trim(),
+        ieEmit:    (p[11]||'').trim(),
+        ufEmit:    (p[18]||'').trim(),
+        nomeDest:  (p[20]||'').trim(),
+        cnpjDest:  (p[21]||'').replace(/[^\d]/g,'').trim(),
+        icms:   parseBRL(p[42]),
+        icmsSt: parseBRL(p[44]),
+        ipi:    parseBRL(p[50]),
+        pis:    parseBRL(p[51]),
+        cofins: parseBRL(p[52]),
         origem:'SEFAZ'
       });
     }
